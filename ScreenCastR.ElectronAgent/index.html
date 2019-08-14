@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ScreencastR Agent</title>
+  </head>
+  <body>
+      <h1>ScreencastR Agent</h1>
+      <div>
+      <h4>Agent Name</h1>
+      <input type="text" id="agentName"/>
+    </div>
+      <input id="startCast" type="button" value="Start Casting">
+      <input id="stopCast" type="button" value="Stop Casting">   
+      <canvas id='screenCanvas'></canvas>      
+  </body>
+  <script>
+      require('./renderer.js')
+      require('./signalr.js')
+    </script>
+</html>

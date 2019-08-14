@@ -1,0 +1,96 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+
+<div class="card border-primary mb-3" style="max-width: 20rem;">
+    @if (agents.Count > 0)
+    {
+        @foreach (var agent in agents)
+        {
+            <div class="card-body">
+                <div>
+                    <h3 class="badge-primary">
+                        @agent
+                    </h3>
+                    <div style="padding-top:10px">
+                        <button id="ViewCast" disabled="@(IsViewingCastOf(agent))" class="btn btn-success btn-sm" @onclick="@(() => OnViewCastClicked(agent))">
+                            View cast
+                        </button>
+
+                        <button id="StopViewCast" disabled="@(!IsViewingCastOf(agent))" class="btn btn-warning btn-sm" @onclick="@(() => OnStopViewCastClicked(agent))">
+                            Stop cast
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="card-body">
+            <h3 class="card-header badge-warning">No Screencast Agents casting the screen now!</h3>
+        </div>
+    }
+</div>
+<div class="border">
+    <img id='screenImage' src="@imageSource" />
+</div>
+@code{
+
+    private List<string> agents = new List<string>();
+
+    HubConnection connection;
+    string imageSource = null;
+    string CurrentViewCastAgent = null;
+
+    protected async override Task OnInitializedAsync()
+    {
+        connection = new HubConnectionBuilder()
+        .WithUrl("https://localhost:5001/ScreenCastHub")
+        .Build();
+
+        connection.On<string>("NewScreenCastAgent", NewScreenCastAgent);
+        connection.On<string>("RemoveScreenCastAgent", RemoveScreenCastAgent);
+        connection.On<string>("OnStreamCastDataReceived", OnStreamCastDataReceived);
+
+        await connection.StartAsync();
+    }
+
+    bool IsViewingCastOf(string agentName)
+    {
+        return agentName == CurrentViewCastAgent;
+    }
+
+    void NewScreenCastAgent(string agentName)
+    {
+        agents.Add(agentName);
+        StateHasChanged();
+    }
+
+    void RemoveScreenCastAgent(string agentName)
+    {
+        agents.Remove(agentName);
+        imageSource = null;
+        CurrentViewCastAgent = null;
+        StateHasChanged();
+    }
+
+    void OnStreamCastDataReceived(string streamData)
+    {
+        imageSource = streamData;
+        StateHasChanged();
+    }
+
+    private async Task OnViewCastClicked(string agentName)
+    {
+        CurrentViewCastAgent = agentName;
+        await connection.InvokeAsync("AddScreenCastViewer", agentName);
+    }
+
+    private async Task OnStopViewCastClicked(string agentName)
+    {
+        CurrentViewCastAgent = null;
+        await connection.InvokeAsync("RemoveScreenCastViewer", agentName);
+        imageSource = null;
+        StateHasChanged();
+    }
+
+}

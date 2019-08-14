@@ -1,0 +1,25 @@
+{
+  "name": "ScreencastRAgent",
+  "version": "1.0.0",
+  "description": "ScreencastR Agent",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "Jeeva Subburaj",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^6.0.0"
+  },
+  "dependencies": {
+    "@microsoft/signalr": "^3.0.0-preview8.19405.7"
+  }
+}
