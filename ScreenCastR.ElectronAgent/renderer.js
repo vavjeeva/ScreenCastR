@@ -37,16 +37,12 @@ initializeSignalR();
 
 function CaptureScreen() {
     return new Promise(function (resolve, reject) {
-        desktopCapturer.getSources({ types: ['screen'], thumbnailSize: { width: screenWidth, height: screenHeight } },
-            (error, sources) => {
-                if (error) console.error(error);
-                for (const source of sources) {
-                    if (source.name === 'Entire screen') {
-                        resolve(source.thumbnail.toDataURL())
-                    }
-                }
-            })
-    })
+        desktopCapturer.getSources({ types: ['screen'], thumbnailSize: { width: screenWidth, height: screenHeight } }).then((sources) => {
+            for (const source of sources) {                
+                resolve(source.thumbnail.toDataURL());
+            }
+        });
+    });
 }
 
 const agentName = document.getElementById('agentName');
