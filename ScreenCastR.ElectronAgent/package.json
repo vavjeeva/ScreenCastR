@@ -17,9 +17,9 @@
   "author": "Jeeva Subburaj",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^7.2.4"
+    "electron": "^10.1.2"
   },
   "dependencies": {
-    "@microsoft/signalr": "^3.0.0-preview8.19405.7"
+    "@microsoft/signalr": "^3.1.8"
   }
 }
