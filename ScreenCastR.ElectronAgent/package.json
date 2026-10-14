@@ -20,6 +20,6 @@
     "electron": "^18.3.7"
   },
   "dependencies": {
-    "@microsoft/signalr": "^3.0.0-preview8.19405.7"
+    "@microsoft/signalr": "^10.0.11"
   }
 }
